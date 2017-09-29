@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  web:
+    build: ./
+    volumes:
+      - REPLACEME-native-osx-sync:/var/www/html:nocopy # nocopy is important
+      - ./settings.docker.php:/var/www/.docker/etc/settings.docker.php
+    ports:
+      - "8088:80"
+    links:
+      - db:dbhost
+
+  db:
+    image: mariadb:10.1
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=dbpass
+      - MYSQL_DATABASE=drupal
+      - MYSQL_HOME=/etc
+    hostname: dbhost
+
+volumes:
+  REPLACEME-native-osx-sync:
+    external: true
